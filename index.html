@@ -49,6 +49,7 @@
     </style>
     <script>
         $(document).ready(function(){
+            getCount();
             getFiles();
         })
 
@@ -83,12 +84,22 @@
             let card = ` <div class="card">
                                 <div>
                                     <img class="card-img-top"
-                                         src="https://dr676m5amcd7d.cloudfront.net/${data}"
+                                         src="http://djocwjyh5wkd4.cloudfront.net/${data}"
                                          alt="Card image cap">
                                     <p class="card-text comment">${data}</p>
                                 </div>
                             </div>`;
             $("#cards-box").append(card);
+        }
+
+        function getCount() {
+            $.ajax({
+                type: 'GET',
+                url: 'http://pythonapp-env.eba-zb7wukep.ap-northeast-2.elasticbeanstalk.com/file/count',
+                success: function (data) {
+                    $("#count").html(data.count);
+                },
+            });
         }
     </script>
 
@@ -112,6 +123,9 @@
             <button type="button" class="btn btn-primary" onclick="save()">저장</button>
         </div>
     </div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">총 파일갯수:<span id="count"></span></a>
+    </nav>
     <div id="cards-box" class="card-columns">
     </div>
 </div>
