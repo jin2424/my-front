@@ -1,119 +1,120 @@
-<!DOCTYPE html>
+<!Doctype html>
 <html lang="ko">
-    <head>
-        <!-- Webpage Title -->
-        <title>핵심 쏙쏙 AWS</title>
 
-        <!-- Required meta tags -->
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-              integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-              crossorigin="anonymous">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
 
-        <!-- JS -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-                integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-                crossorigin="anonymous"></script>
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
 
-        <!-- 구글폰트 -->
-        <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
+    <!-- 구글폰트 -->
+    <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
 
-        <style type="text/css">
-            * {
-                font-family: 'Stylish', sans-serif;
-            }
 
-            .wrap {
-                width: 500px;
-                margin: auto;
-            }
+    <title>스파르타코딩클럽 | 나홀로 메모장111</title>
 
-            .img {
-                background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/AWS_Simple_Icons_AWS_Cloud.svg/1200px-AWS_Simple_Icons_AWS_Cloud.svg.png');
-                background-size: cover;
-                background-position: center;
-                width: 500px;
-                height: 300px;
-            }
+    <!-- style -->
+    <style type="text/css">
+        * {
+            font-family: 'Stylish', sans-serif;
+        }
 
-            .info {
-                margin-top: 20px;
-                margin-bottom: 20px;
-            }
+        .wrap {
+            width: 900px;
+            margin: auto;
+        }
 
-            h1, h5 {
-                display: inline;
-            }
+        .comment {
+            color: blue;
+            font-weight: bold;
+        }
 
-            .order {
-                text-align: center;
-            }
+        #post-box {
+            width: 500px;
+            margin: 20px auto;
+            padding: 50px;
+            border: black solid;
+            border-radius: 5px;
+        }
+    </style>
+    <script>
+        $(document).ready(function(){
+            getFiles();
+        })
 
-            .orders {
-                margin-top: 100px;
-            }
-        </style>
+        function save() {
+            var form_data = new FormData($('#upload-file')[0]);
+            $.ajax({
+                type: 'POST',
+                url: '{EB URL}/fileupload',
+                data: form_data,
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    alert("파일이 업로드 되었습니다!!");
+                    location.reload();
+                },
+            });
+        }
 
-        <script>
-             $(document).ready(function(){
-                getCount();
-                getFiles();
-             })
+        function getFiles() {
+            $.ajax({
+                type: 'GET',
+                url: '{EB URL}/files',
+                success: function (data) {
+                    for(let i = 0 ; i < data['files'].length ; i++){
+                        makeCard(data['files'][i]);
+                    }
+                },
+            });
+        }
 
-             function save() {
-                var form_data = new FormData($('#upload-file')[0]);
-                $.ajax({
-                    type: 'POST',
-                    url: '{EB URL}/fileupload',
-                    data: form_data,
-                    processData: false,
-                    contentType: false,
-                    success: function (data) {
-                        alert("파일이 업로드 되었습니다!!");
-                        location.reload();
-                    },
-                });
-            }
-        </script>
-    </head>
-    <body>
-        <div class="wrap">
-            <div class="img"></div>
-            <div class="info">
-                <h1>클라우드를 팝니다</h1>
-                <h5>가격: 3,000원/개</h5>
-                <p>이 클라우드는 특별한 힘을 가지고 있어요 개발을 편하게 해주죠!!</p>
+        function makeCard(data){
+            let card = ` <div class="card">
+                                <div>
+                                    <img class="card-img-top"
+                                         src="http://djocwjyh5wkd4.cloudfront.net/${data}"
+                                         alt="Card image cap">
+                                    <p class="card-text comment">${data}</p>
+                                </div>
+                            </div>`;
+            $("#cards-box").append(card);
+        }
+    </script>
 
-                <hr style="border: dashed 5px darkblue;">
-                <h5>후기 사진을 남겨주세요</h5>
-                <div class="input-group mb-3">
-                    <form id="upload-file">
+</head>
+
+<body>
+<div class="wrap">
+    <div class="jumbotron">
+        <h1 class="display-4">나홀로 이미지 메모장! 완료!!</h1>
+        <p class="lead">중요한 이미지를 저장해두고, 나중에 볼 수 있는 공간입니다</p>
+        <hr class="my-4">
+    </div>
+    <div id="post-box" class="form-post">
+        <div>
+            <div class="form-group">
+                <form id="upload-file">
+                    <label for="post-url">이미지 파일</label>
                     <input type="file" name="file"/>
-                    </form>
-                </div>
-                <div class="order">
-                    <button onclick="save()" type="button" class="btn btn-primary">저장</button>
-                </div>
+                </form>
             </div>
-
-            <div class="orders">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th scope="col">사진</th>
-                    </tr>
-                    </thead>
-                   <tbody id="orders-box">
-                    <tr>
-                        <td><img width="200px" src="https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FmXUDU%2FbtqQIarPlqu%2FCym5KQyM68Ai0PbUzW2QD0%2Fimg.jpg"></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
+            <button type="button" class="btn btn-primary" onclick="save()">저장</button>
         </div>
-    </body>
+    </div>
+    <div id="cards-box" class="card-columns">
+    </div>
+</div>
+</body>
+
 </html>
